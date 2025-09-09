@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Loader } from '../components/Loader/Loader';
-import PeopleShowTable from '../MyComponents/peopleShowTable';
+import PeopleShowTable from '../components/peopleShowTable';
 import { Person } from '../types';
 import { useParams } from 'react-router-dom';
 
