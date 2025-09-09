@@ -3,8 +3,14 @@ import { Person } from '../types';
 import sortAsc from '../../public/images/sort_asc.png';
 import sortDesc from '../../public/images/sort_desc.png';
 import sortBoth from '../../public/images/sort_both.png';
+import PersonLink from './PersonLink';
 
-export const PeopleTable = ({ people }: { people: Person[] }) => {
+interface Props {
+  people: Person[];
+  selectedPerson?: Person | null;
+}
+
+export const PeopleTable = ({ people, selectedPerson = null }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query')?.toLowerCase() || '';
   const sex = searchParams.get('sex');
@@ -18,16 +24,13 @@ export const PeopleTable = ({ people }: { people: Person[] }) => {
       p.name.toLowerCase().includes(query) ||
       p.motherName?.toLowerCase().includes(query) ||
       p.fatherName?.toLowerCase().includes(query);
-
     const matchesSex = !sex || p.sex === sex;
-
     const matchesCentury =
       centuries.length === 0 ||
       centuries.includes(Math.floor(p.born / 100 + 1).toString());
 
     return matchesQuery && matchesSex && matchesCentury;
   });
-
   const toggleSort = (field: string) => {
     const newParams = new URLSearchParams(searchParams);
     const currentSort = searchParams.get('sort');
@@ -86,7 +89,7 @@ export const PeopleTable = ({ people }: { people: Person[] }) => {
   };
 
   return (
-    <table className="table is-fullwidth">
+    <table className="table is-striped is-hoverable is-narrow is-fullwidth">
       <thead>
         <tr>
           <th onClick={() => toggleSort('name')}>
@@ -104,14 +107,32 @@ export const PeopleTable = ({ people }: { people: Person[] }) => {
         </tr>
       </thead>
       <tbody>
-        {sorted.map(p => (
-          <tr key={p.slug}>
-            <td>{p.name}</td>
-            <td>{p.sex}</td>
-            <td>{p.born}</td>
-            <td>{p.died}</td>
-          </tr>
-        ))}
+        {people.map(p => {
+          const mother =
+            people.find(person => person.name === p.motherName) || null;
+          const father =
+            people.find(person => person.name === p.fatherName) || null;
+
+          return (
+            <tr
+              key={p.slug}
+              className={p === selectedPerson ? 'has-background-warning' : ''}
+            >
+              <td>
+                <PersonLink person={p} />
+              </td>
+              <td>{p.sex}</td>
+              <td>{p.born}</td>
+              <td>{p.died}</td>
+              <td>
+                {mother ? <PersonLink person={mother} /> : p.motherName || '-'}
+              </td>
+              <td>
+                {father ? <PersonLink person={father} /> : p.fatherName || '-'}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

@@ -10,7 +10,7 @@ export const PeoplePage = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch('/api/people')
+    fetch('/api/people.json')
       .then(res => res.json())
       .then(data => {
         setPeople(data);

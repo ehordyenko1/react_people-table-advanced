@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Loader } from '../components/Loader/Loader';
-import PeopleShowTable from '../components/peopleShowTable';
 import { Person } from '../types';
 import { useParams } from 'react-router-dom';
+import { PeopleTable } from '../components/PeopleTable';
 
-export const PeoplePage = () => {
+export const ShowPeoplePage = () => {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,5 +27,9 @@ export const PeoplePage = () => {
 
   const selectedPerson = people.find(p => p.slug === slug) || null;
 
-  return <PeopleShowTable people={people} selectedPerson={selectedPerson} />;
+  return (
+    <div className="container">
+      <PeopleTable people={people} selectedPerson={selectedPerson} />
+    </div>
+  );
 };
