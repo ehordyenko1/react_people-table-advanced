@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Person } from '../types';
 import sortAsc from '../../public/images/sort_asc.png';
 import sortDesc from '../../public/images/sort_desc.png';
@@ -10,7 +10,8 @@ interface Props {
   selectedPerson?: Person | null;
 }
 
-export const PeopleTable = ({ people, selectedPerson = null }: Props) => {
+export const PeopleTable = ({ people }: Props) => {
+  const { slug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query')?.toLowerCase() || '';
   const sex = searchParams.get('sex');
@@ -104,6 +105,8 @@ export const PeopleTable = ({ people, selectedPerson = null }: Props) => {
           <th onClick={() => toggleSort('died')}>
             Died <img src={getSortIcon('died')} alt="" />
           </th>
+          <th>Mother</th>
+          <th>Father</th>
         </tr>
       </thead>
       <tbody>
@@ -116,7 +119,7 @@ export const PeopleTable = ({ people, selectedPerson = null }: Props) => {
           return (
             <tr
               key={p.slug}
-              className={p === selectedPerson ? 'has-background-warning' : ''}
+              className={p.slug === slug ? 'has-background-warning' : ''}
             >
               <td>
                 <PersonLink person={p} />

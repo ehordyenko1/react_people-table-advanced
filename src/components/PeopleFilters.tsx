@@ -67,24 +67,21 @@ export const PeopleFilters = () => {
       <p className="panel-heading">Filters</p>
 
       <p className="panel-tabs" data-cy="SexFilter">
-        <button
-          className={!sex ? 'is-active' : ''}
-          onClick={() => setSex(null)}
-        >
+        <a className={!sex ? 'is-active' : ''} onClick={() => setSex(null)}>
           All
-        </button>
-        <button
+        </a>
+        <a
           className={sex === 'm' ? 'is-active' : ''}
           onClick={() => setSex('m')}
         >
           Male
-        </button>
-        <button
+        </a>
+        <a
           className={sex === 'f' ? 'is-active' : ''}
           onClick={() => setSex('f')}
         >
           Female
-        </button>
+        </a>
       </p>
 
       <div className="panel-block">
